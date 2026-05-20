@@ -1,14 +1,13 @@
-from pydantic import BaseSettings, Field
-from typing import Optional
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class Settings(BaseSettings):
-    app_env: str = Field("development", env="APP_ENV")
-    debug: bool = Field(True, env="DEBUG")
-    database_url: str = Field(..., env="DATABASE_URL")
-    secret_key: str = Field(..., env="SECRET_KEY")
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    app_env: str = "development"
+    debug: bool = True
+    database_url: str
+    secret_key: str
+
 
 settings = Settings()

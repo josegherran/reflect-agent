@@ -1,17 +1,16 @@
-from strands_agents.agent import Agent
-from agent.skills import PromptEvaluationSkill, PromptTemplateSkill
-from agent.tools import PromptRubricTool
+from pathlib import Path
+from strands import Agent, AgentSkills
+from agent.skills import evaluate_prompt, generate_prompt_template
+from agent.tools import prompt_rubric_tool
 
-class ReflectPromptingAgent(Agent):
-    """
-    Agent to guide users in creating, evaluating, and improving AI prompts using the Gartner ReFlect framework and advanced prompt engineering techniques.
-    """
-    def __init__(self):
-        super().__init__(
-            name="ReFlectPromptingAgent",
-            description="Guides users in prompt engineering using the ReFlect framework.",
-            skills=[PromptEvaluationSkill(), PromptTemplateSkill()],
-            tools=[PromptRubricTool()]
-        )
+_skills_dir = Path(__file__).parent.parent / "skills"
+_skills_plugin = AgentSkills(skills=[str(_skills_dir)])
+_system_prompt = (Path(__file__).parent / "system_prompt.md").read_text()
 
-agent = ReflectPromptingAgent()
+agent = Agent(
+    name="ReFlectPromptingAgent",
+    description="Guides users in prompt engineering using the ReFlect framework.",
+    tools=[evaluate_prompt, generate_prompt_template, prompt_rubric_tool],
+    plugins=[_skills_plugin],
+    system_prompt=_system_prompt,
+)
