@@ -130,3 +130,7 @@ cython_debug/
 
 # VS Code
 .vscode/
+
+# Documentation and references
+docs/
+references/
