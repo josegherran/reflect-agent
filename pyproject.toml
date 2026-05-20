@@ -1,0 +1,43 @@
+[project]
+name = "reflect-agent"
+version = "0.1.0"
+description = "A Python multi-agent AI project for guiding AI prompt creation and evaluation using the ReFlect framework."
+authors = [
+    { name="Jose G. Herran", email="josegherran@gmail.com" }
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "strands-agents",
+    "strands-agents-tools",
+    "strands-agents-builder",
+    "aiohttp",
+    "httpx",
+    "anyio",
+    "asyncio"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "ruff",
+    "mypy"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+# Ruff configuration
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "W", "I"]
+
+# Mypy configuration
+[tool.mypy]
+python_version = "3.13"
+ignore_missing_imports = true
+strict = true
