@@ -2,7 +2,7 @@ from strands import tool
 
 
 @tool
-def prompt_rubric_tool(prompt: str) -> dict:
+def prompt_rubric_tool(prompt: str) -> dict[str, list[str]]:
     """
     Provide rubrics and metrics for evaluating prompt effectiveness.
 
@@ -15,7 +15,14 @@ def prompt_rubric_tool(prompt: str) -> dict:
     # Placeholder: Add rubric logic here
     return {
         "rubrics": [
-            "relevance", "accuracy", "fluency", "coherence", "completeness",
-            "safety", "groundedness", "instruction_following", "verbosity"
+            "relevance",
+            "accuracy",
+            "fluency",
+            "coherence",
+            "completeness",
+            "safety",
+            "groundedness",
+            "instruction_following",
+            "verbosity",
         ]
     }

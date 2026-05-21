@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     debug: bool = False
     database_url: str | None = None
     secret_key: str | None = None
+    allowed_origins: list[str] = ["http://localhost:8000"]
 
 
 settings = Settings()
