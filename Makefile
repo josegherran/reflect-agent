@@ -9,7 +9,6 @@ install:
 lint:
 	ruff check .
 	ruff format --check .
-	ruff check --fix .
 
 format:
 	ruff format .

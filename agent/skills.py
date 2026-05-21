@@ -44,14 +44,3 @@ def generate_prompt_template(task: str, context: str = "") -> str:
     return f"Prompt template for task: {task} with context: {context}"
 
 
-PromptEvaluationSkill = Skill(
-    name="prompt-evaluation",
-    description="Evaluate prompts using ReFlect rubrics across nine quality dimensions.",
-    instructions="Use the evaluate_prompt tool to score a prompt on relevance, accuracy, fluency, coherence, completeness, safety, groundedness, instruction_following, and verbosity.",
-)
-
-PromptTemplateSkill = Skill(
-    name="prompt-template",
-    description="Generate modular prompt templates demonstrating zero-shot, few-shot, chain-of-thought, and chaining styles.",
-    instructions="Use the generate_prompt_template tool to create a prompt template for a given task and context.",
-)

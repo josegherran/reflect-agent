@@ -12,13 +12,9 @@ requires-python = ">=3.13"
 dependencies = [
     "pydantic>=2.0.0",
     "pydantic-settings>=2.0.0",
-    "python-dotenv>=1.0.0",
     "strands-agents",
     "strands-agents-tools",
     "strands-agents-builder",
-    "aiohttp",
-    "httpx",
-    "anyio",
     "fastapi",
     "uvicorn[standard]"
 ]
