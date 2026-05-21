@@ -1,10 +1,9 @@
 # Makefile for reflect-agent
 
-.PHONY: install lint typecheck test run
+.PHONY: install lint format typecheck test coverage run
 
 install:
-	uv pip install -r requirements.txt
-	uv pip install -e .
+	uv pip install -e ".[dev]"
 
 lint:
 	ruff check .
@@ -13,13 +12,14 @@ lint:
 format:
 	ruff format .
 
-mypy:
-	mypy .
-
-typecheck: mypy
+typecheck:
+	mypy agent/ config.py main.py
 
 test:
-	pytest
+	pytest tests/ -v
+
+coverage:
+	pytest tests/ --cov=agent --cov=ui --cov=config --cov-report=term-missing --cov-fail-under=80
 
 run:
 	python main.py

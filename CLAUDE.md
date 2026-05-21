@@ -20,11 +20,13 @@ make run          # python main.py
 ```
 
 Run the webchat UI directly:
+
 ```sh
 python ui/webchat.py   # FastAPI server on http://localhost:8000
 ```
 
 Run a single test:
+
 ```sh
 pytest tests/test_foo.py::test_bar -v
 ```
@@ -32,6 +34,7 @@ pytest tests/test_foo.py::test_bar -v
 ## Environment
 
 Requires a `.env` file (copy from `.env.example`). Two required variables:
+
 - `DATABASE_URL`
 - `SECRET_KEY`
 
@@ -39,7 +42,7 @@ Optional: `APP_ENV` (default: `development`), `DEBUG` (default: `true`).
 
 ## Architecture
 
-```
+```strcture
 agent/
   __init__.py      # Agent instantiation — single `agent` export
   tools.py         # @tool-decorated functions (prompt_rubric_tool)
@@ -47,6 +50,10 @@ agent/
   system_prompt.md # System prompt text (not yet wired into agent.__init__)
 ui/
   webchat.py       # FastAPI app that imports `agent` and exposes /chat endpoint
+deploy/
+  Dockerfile       # Container image build
+  docker-compose.yml  # Local compose; run from repo root: docker compose -f deploy/docker-compose.yml up
+  .dockerignore
 config.py          # Pydantic BaseSettings (loads .env); exports `settings`
 ```
 

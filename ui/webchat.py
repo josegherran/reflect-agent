@@ -1,8 +1,7 @@
 import json
 import logging
-import os
-import sys
 import time
+from collections.abc import AsyncGenerator, Awaitable, Callable
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
@@ -10,8 +9,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, Response, StreamingResponse
 from prometheus_client import CONTENT_TYPE_LATEST, Counter, Histogram, generate_latest
 from pydantic import BaseModel, Field
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from agent import agent
 from config import settings
@@ -32,7 +29,7 @@ class ChatRequest(BaseModel):
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     logger.info("startup complete")
     yield
     logger.info("shutdown initiated")
@@ -50,9 +47,11 @@ app.add_middleware(
 
 
 @app.middleware("http")
-async def log_requests(request: Request, call_next):
+async def log_requests(
+    request: Request, call_next: Callable[[Request], Awaitable[Response]]
+) -> Response:
     start = time.monotonic()
-    response = await call_next(request)
+    response: Response = await call_next(request)
     latency = time.monotonic() - start
     logger.info(
         '{"method":"%s","path":"%s","status":%d,"latency_s":%.3f}',
@@ -65,17 +64,17 @@ async def log_requests(request: Request, call_next):
 
 
 @app.get("/health")
-async def health():
+async def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
 @app.get("/metrics")
-async def metrics():
+async def metrics() -> Response:
     return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
 
 @app.get("/", response_class=HTMLResponse)
-async def index():
+async def index() -> str:
     return """
     <html>
     <head><title>ReFlect Agent Webchat</title></head>
@@ -153,7 +152,7 @@ async def index():
 
 
 @app.post("/chat")
-async def chat(req: ChatRequest):
+async def chat(req: ChatRequest) -> JSONResponse:
     """Non-streaming JSON endpoint for API clients."""
     t0 = time.monotonic()
     try:
@@ -177,10 +176,10 @@ async def chat(req: ChatRequest):
 
 
 @app.post("/chat/stream")
-async def chat_stream(req: ChatRequest):
+async def chat_stream(req: ChatRequest) -> StreamingResponse:
     """Streaming SSE endpoint — yields text chunks as they arrive from the model."""
 
-    async def generate():
+    async def generate() -> AsyncGenerator[str, None]:
         t0 = time.monotonic()
         try:
             async for event in agent.stream_async(req.message):
