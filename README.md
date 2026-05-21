@@ -14,10 +14,14 @@ Guide users in creating, evaluating, and improving AI prompts using the Gartner 
 - Helps build modular prompt templates and libraries for regular tasks and personas
 - Provides step-by-step flows and iterative feedback
 
-## Conversation Starters:
+## Conversation Starters
 
 - What is the ReFlect method?
 - Improve my prompt
 - Few-shot prompt examples
 - Evaluate this prompt
 - Prompt chaining
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
